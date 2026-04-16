@@ -41,4 +41,38 @@ describe('SampleCard', () => {
     expect(screen.getByText('Loading...')).toBeInTheDocument();
     expect(screen.queryByText('Should not show')).not.toBeInTheDocument();
   });
+
+  test('shows error state when error is provided', () => {
+    render(
+      <SampleCard title="T" description="D" error="Something went wrong" />
+    );
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Something went wrong');
+    expect(screen.queryByText('T')).not.toBeInTheDocument();
+  });
+
+  test('triggers onClick on Enter key press', () => {
+    const handle = jest.fn();
+    render(<SampleCard title="Keyboard" description="D" onClick={handle} />);
+
+    const article = screen.getByLabelText('Keyboard');
+    fireEvent.keyDown(article, { key: 'Enter' });
+    expect(handle).toHaveBeenCalledTimes(1);
+  });
+
+  test('triggers onClick on Space key press', () => {
+    const handle = jest.fn();
+    render(<SampleCard title="Keyboard" description="D" onClick={handle} />);
+
+    const article = screen.getByLabelText('Keyboard');
+    fireEvent.keyDown(article, { key: ' ' });
+    expect(handle).toHaveBeenCalledTimes(1);
+  });
+
+  test('sets tabIndex when onClick is provided', () => {
+    render(<SampleCard title="Tab" description="D" onClick={() => {}} />);
+
+    const article = screen.getByLabelText('Tab');
+    expect(article).toHaveAttribute('tabIndex', '0');
+  });
 });

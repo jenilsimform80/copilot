@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useCallback } from "react";
 
-interface SampleCardProps {
+interface Props {
   title: string;
   description: string;
   badge?: string;
   onClick?: () => void;
   isLoading?: boolean;
+  error?: string;
 }
 
 export function SampleCard({
@@ -14,16 +15,33 @@ export function SampleCard({
   badge,
   onClick,
   isLoading,
-}: SampleCardProps) {
+  error,
+}: Props) {
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (onClick && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        onClick();
+      }
+    },
+    [onClick]
+  );
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p aria-live="polite">Loading...</p>;
+  }
+
+  if (error) {
+    return <p role="alert" aria-live="assertive">{error}</p>;
   }
 
   return (
     <article
       aria-label={title}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
       style={{ cursor: onClick ? "pointer" : undefined }}
     >
       {badge && (
