@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-interface Props {
+interface SampleCardProps {
   title: string;
   description: string;
   badge?: string;
@@ -16,7 +16,7 @@ export function SampleCard({
   onClick,
   isLoading,
   error,
-}: Props) {
+}: SampleCardProps) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (onClick && (e.key === "Enter" || e.key === " ")) {

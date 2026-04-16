@@ -1,3 +1,5 @@
+import { version as pkgVersion } from "../../package.json";
+
 export type HealthStatus = "ok" | "degraded" | "unavailable";
 
 export interface HealthResponse {
@@ -12,6 +14,6 @@ export function getHealthStatus(): HealthResponse {
     status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: process.env.npm_package_version ?? "unknown",
+    version: pkgVersion,
   };
 }
