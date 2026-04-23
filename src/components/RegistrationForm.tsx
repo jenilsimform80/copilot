@@ -45,7 +45,7 @@ function validateForm(values: {
 
   if (values.age !== "") {
     const ageNum = Number(values.age);
-    if (!Number.isInteger(ageNum) || isNaN(ageNum)) {
+    if (!Number.isInteger(ageNum)) {
       errors.age = "Age must be a whole number";
     } else if (ageNum < 0 || ageNum > 150) {
       errors.age = "Age must be between 0 and 150";
@@ -112,7 +112,7 @@ export function RegistrationForm({ onSubmit }: RegistrationFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-label="Registration form">
+    <form onSubmit={handleSubmit} noValidate role="form" aria-label="Registration form">
       {submitError && (
         <p role="alert" aria-live="assertive">
           {submitError}
