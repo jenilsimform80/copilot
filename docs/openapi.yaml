@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: copilot-test API
+  version: 1.0.0
+  description: Auto-generated from src/server/ by .github/skills/api-docs/generate-api-docs.ts
+paths:
+  /api/users:
+    post:
+      operationId: createUser
+      summary: Creates a new user with validation and error handling
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+            example: "{
+  \"email\": \"user@example.com\",
+  \"name\": \"John Doe\",
+  \"age\": 25,
+  \"role\": \"user\"
+}"
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: object
+        timestamp:
+          type: string
+        uptime:
+          type: number
+        version:
+          type: string
+      required:
+        - status
+        - timestamp
+        - uptime
+        - version
+    CreateUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        age:
+          type: number
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - guest
+      required:
+        - email
+        - name
+        - role
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        age:
+          type: number
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - guest
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - email
+        - name
+        - role
+        - createdAt
+    ApiError:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+      required:
+        - status
+        - message
+    ValidationError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        value: {}
+      required:
+        - field
+        - message
